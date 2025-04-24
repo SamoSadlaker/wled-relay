@@ -82,6 +82,18 @@ docker run -d \
   webhook-relay
 ```
 > 🐧 On Linux, you may need to use --network host or adjust the internal webhook URLs.
+
+or
+
+#### 🧪 To use it:
+```bash
+docker-compose up -d
+```
+#### 🔄 To rebuild after changes:
+```bash
+docker-compose up -d --build
+```
+
 ---
 
 ## 🔐 Security
