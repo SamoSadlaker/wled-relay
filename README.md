@@ -24,31 +24,22 @@ A lightweight, Dockerized Node.js application that exposes secure HTTP endpoints
 
 ---
 
-## ⚙️ Setup
-
-### 1. Clone the repository
+## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/your-username/wled-relay.git
-cd wled-relay
+docker run -d \
+  -p 3000:3000 \
+  -e API_KEY=your_secret_key \
+  -v /path/to/config.json:/app/config.json \
+  samosadlaker/wled-relay:latest
 ```
+Manual Setup:
+1. Clone repo & install dependencies
+2. Configure .env and config.json
+3. Start with npm start
 
-### 2. Install dependencies
-```bash
-npm install
-```
-
-### 3. Environment variables
-```bash
-cp .env.example .env
-```
-or
-```env
-PORT=3000
-API_KEY=your_super_secret_key
-```
-
-### 4. Config.json
+## ⚙️ Configuration
+`config.json`
 ```json
 {
   "endpoints": [
@@ -63,48 +54,33 @@ API_KEY=your_super_secret_key
   ]
 }
 ```
----
 
-## 🐳 Docker
-
-### 1. Build image
-```bash
-docker build -t wled-relay .
+`.env`
+```env
+PORT=3000                 # Server port
+API_KEY=change_this       # Required for all requests
 ```
 
-### 2. Run container
-```bash
-docker run -d \
-  -p 3000:3000 \
-  --env-file .env \
-  -v $(pwd)/config.json:/app/config.json \
-  --name relay \
-  webhook-relay
-```
-> 🐧 On Linux, you may need to use --network host or adjust the internal webhook URLs.
+## 🔐 Authentication
+Include your API key via either:
+* Header: x-api-key: your_key
+* Query param: ?key=your_key
 
-or
-
-#### 🧪 To use it:
-```bash
-docker-compose up -d
-```
-#### 🔄 To rebuild after changes:
-```bash
-docker-compose up -d --build
+## 🐳 Docker Compose
+```yaml
+services:
+  relay:
+    image: samosadlaker/wled-relay:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - API_KEY=${API_KEY}
+    volumes:
+      - ./config.json:/app/config.json
+    restart: unless-stopped
 ```
 
----
-
-## 🔐 Security
-All endpoints require an API key provided via:
-
-* Query parameter: ?key=your_api_key
-* Or header: x-api-key: your_api_key
-
----
-
-## 🛑 404 for Unknown Routes
-Any unregistered endpoint will return a proper 404 Not Found.
-
-
+## 🌐 Usage Example
+```bash
+curl -X GET "http://your-server:3000/wled-on?key=your_key"
+```

@@ -1,7 +1,7 @@
 services:
-  webhook-relay:
+  wled-relay:
     build: .
-    container_name: webhook-relay
+    container_name: wled-relay
     ports:
       - "3000:3000"
     env_file:
